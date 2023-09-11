@@ -87,7 +87,7 @@ class EPUBView extends DOMView<EPUBViewState, EPUBViewData> {
 	constructor(options: DOMViewOptions<EPUBViewState, EPUBViewData>) {
 		super(options);
 		if (options.data.buf) {
-			this.book = Epub(options.data.buf.buffer);
+			this.book = Epub(options.data.buf);
 			delete this._options.data.buf;
 		}
 		else if (options.data.book) {

@@ -29,7 +29,7 @@ async function createReader() {
 		localizedStrings: strings,
 		readOnly: false,
 		data: {
-			buf: new Uint8Array(await res.arrayBuffer()),
+			buf: await res.arrayBuffer(),
 			baseURI: new URL('/', window.location).toString()
 		},
 		// rtl: true,

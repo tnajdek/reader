@@ -1035,7 +1035,7 @@ export type DOMViewOptions<State extends DOMViewState, Data> = {
 	onKeyUp: (event: KeyboardEvent) => void;
 	onKeyDown: (event: KeyboardEvent) => void;
 	data: Data & {
-		buf?: Uint8Array,
+		buf?: ArrayBuffer,
 		baseURI?: string
 	};
 };
