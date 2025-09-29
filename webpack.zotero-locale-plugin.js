@@ -19,13 +19,16 @@ class ZoteroLocalePlugin {
 		return `https://raw.githubusercontent.com/zotero/zotero/${this.commitHash}/chrome/locale`;
 	}
 
-	async downloadFile(url, outputPath) {
+	async downloadFile(url, outputPath, extraContent = '') {
 		return new Promise((resolve, reject) => {
 			let file = fs.createWriteStream(outputPath);
 			https.get(url, (response) => {
 				if (response.statusCode === 200) {
 					response.pipe(file);
 					file.on('finish', () => {
+						if (extraContent) {
+							fs.appendFileSync(outputPath, extraContent);
+						}
 						file.close(resolve);
 					});
 				}
@@ -83,7 +86,12 @@ class ZoteroLocalePlugin {
 					// Download the file
 					try {
 						console.log(`Downloading ${url} -> ${outputFile}`);
-						await this.downloadFile(url, outputFile);
+						if (file === 'reader.ftl' && locale === 'en-US') {
+							await this.downloadFile(url, outputFile, fs.readFileSync('./reader-web.ftl', 'utf8'));
+						}
+						else {
+							await this.downloadFile(url, outputFile);
+						}
 					}
 					catch (error) {
 						console.error(`Failed to download ${url}:`, error.message);
